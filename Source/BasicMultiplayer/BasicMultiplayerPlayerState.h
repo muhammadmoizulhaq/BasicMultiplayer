@@ -24,6 +24,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMyPlayerName(const FText& NewName);
 private:
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = "OnRep_MyPlayerName")
 	FText MyPlayerName;
+
+	UFUNCTION()
+	void OnRep_MyPlayerName();
 };

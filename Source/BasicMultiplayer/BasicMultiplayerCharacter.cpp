@@ -13,7 +13,6 @@
 #include "Components/WidgetComponent.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "NamePlate.h"
-#include "BasicMultiplayerPlayerState.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -66,16 +65,13 @@ ABasicMultiplayerCharacter::ABasicMultiplayerCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
-void ABasicMultiplayerCharacter::NameSet()
+void ABasicMultiplayerCharacter::NameSet(const FText& Name)
 {
-	if (ABasicMultiplayerPlayerState* PS = Cast<ABasicMultiplayerPlayerState>(GetPlayerState()))
+	if (UNamePlate* NP = Cast<UNamePlate>(Nameplate->GetWidget()))
 	{
-		if (UNamePlate* NP = Cast<UNamePlate>(Nameplate->GetWidget()))
-		{
-			NP->SetName(PS->GetMyPlayerName());
-			Nameplate->bHiddenInGame = false;
-			UE_LOG(LogTemp, Warning, TEXT("Player Name {Character}: [%s]"), *PS->GetMyPlayerName().ToString());
-		}
+		NP->SetName(Name);
+		Nameplate->bHiddenInGame = false;
+		UE_LOG(LogTemp, Warning, TEXT("Player Name {Character}: [%s]"), *Name.ToString());
 	}
 }
 

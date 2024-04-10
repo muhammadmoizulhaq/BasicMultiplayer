@@ -52,8 +52,8 @@ class ABasicMultiplayerCharacter : public ACharacter
 public:
 	ABasicMultiplayerCharacter();
 	
-	UFUNCTION(BlueprintCallable)
-	void NameSet();
+	UFUNCTION()
+	void NameSet(const FText& Name);
 protected:
 
 	/** Called for movement input */
