@@ -1,0 +1,1 @@
+"C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Users\moizu\Documents\Projects\BasicMultiplayer\BasicMultiplayer.uproject" 127.0.0.1 -game -ResX=450-ResY=680 -WinX=0 -WinY=20 -log -nosteam
