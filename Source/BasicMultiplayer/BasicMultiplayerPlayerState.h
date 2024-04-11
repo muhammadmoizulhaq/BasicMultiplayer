@@ -16,6 +16,8 @@ class BASICMULTIPLAYER_API ABasicMultiplayerPlayerState : public APlayerState
 public:
 	ABasicMultiplayerPlayerState();
 
+	virtual void PostInitializeComponents() override;
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UFUNCTION(BlueprintCallable)

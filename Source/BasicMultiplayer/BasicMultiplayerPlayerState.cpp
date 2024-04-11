@@ -10,6 +10,16 @@ ABasicMultiplayerPlayerState::ABasicMultiplayerPlayerState()
 	NetUpdateFrequency = 100.f;
 }
 
+void ABasicMultiplayerPlayerState::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (HasAuthority())
+	{
+		OnRep_MyPlayerName();
+	}
+}
+
 void ABasicMultiplayerPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

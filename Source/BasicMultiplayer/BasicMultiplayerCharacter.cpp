@@ -90,6 +90,11 @@ void ABasicMultiplayerCharacter::BeginPlay()
 	}
 }
 
+void ABasicMultiplayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
