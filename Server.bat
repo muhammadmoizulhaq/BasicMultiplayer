@@ -1,1 +1,1 @@
-"C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Users\moizu\Documents\Projects\BasicMultiplayer\BasicMultiplayer.uproject" ThirdPersonMap -server -log -nosteam
+"C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Users\moizu\Documents\Projects\BasicMultiplayer\BasicMultiplayer.uproject" ThirdPersonMap -server -log -nosteam

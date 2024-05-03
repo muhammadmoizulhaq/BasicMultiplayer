@@ -8,8 +8,9 @@ public class BasicMultiplayerTarget : TargetRules
 	public BasicMultiplayerTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		DefaultBuildSettings = BuildSettingsVersion.V5;
+		bValidateFormatStrings = true;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("BasicMultiplayer");
 	}
 }

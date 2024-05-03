@@ -16,9 +16,6 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-//////////////////////////////////////////////////////////////////////////
-// ABasicMultiplayerCharacter
-
 ABasicMultiplayerCharacter::ABasicMultiplayerCharacter()
 {
 	// Set size for collision capsule
@@ -37,7 +34,7 @@ ABasicMultiplayerCharacter::ABasicMultiplayerCharacter()
 	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = 230.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -60,6 +57,9 @@ ABasicMultiplayerCharacter::ABasicMultiplayerCharacter()
 	Nameplate->SetRelativeRotation(FRotator(0.f, -90.f, 90.f));
 	Nameplate->SetWidgetSpace(EWidgetSpace::Screen);
 	Nameplate->bHiddenInGame = true;
+
+	WalkSpeed = 230.f;
+	SprintSpeed = 500.f;
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -95,9 +95,6 @@ void ABasicMultiplayerCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
-
 void ABasicMultiplayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
@@ -106,6 +103,13 @@ void ABasicMultiplayerCharacter::SetupPlayerInputComponent(UInputComponent* Play
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		// Sprint
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ABasicMultiplayerCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ABasicMultiplayerCharacter::StopSprint);
+
+		// Interact
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ABasicMultiplayerCharacter::Interact);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABasicMultiplayerCharacter::Move);
@@ -153,4 +157,55 @@ void ABasicMultiplayerCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+// Sprint Setup with validation
+
+void ABasicMultiplayerCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 230.f;
+	Server_Walk(GetCharacterMovement()->MaxWalkSpeed);
+}
+
+void ABasicMultiplayerCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	Server_Sprint(GetCharacterMovement()->MaxWalkSpeed);
+}
+
+void ABasicMultiplayerCharacter::Interact()
+{
+	Server_Interact();
+}
+
+void ABasicMultiplayerCharacter::Server_Interact_Implementation()
+{
+}
+
+bool ABasicMultiplayerCharacter::Server_Walk_Validate(const float& Speed)
+{
+	if (Speed != WalkSpeed)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool ABasicMultiplayerCharacter::Server_Sprint_Validate(const float& Speed)
+{
+	if (Speed != SprintSpeed)
+	{
+		return false;
+	}
+	return true;
+}
+
+void ABasicMultiplayerCharacter::Server_Walk_Implementation(const float& Speed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Speed;
+}
+
+void ABasicMultiplayerCharacter::Server_Sprint_Implementation(const float& Speed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Speed;
 }

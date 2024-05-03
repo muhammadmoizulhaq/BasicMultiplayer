@@ -14,10 +14,10 @@ void ABasicMultiplayerPlayerState::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (HasAuthority())
+	/*if (HasAuthority())
 	{
 		OnRep_MyPlayerName();
-	}
+	}*/
 }
 
 void ABasicMultiplayerPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "BaseInteract.h"
 #include "BasicMultiplayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -41,6 +42,12 @@ class ABasicMultiplayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SprintAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -49,9 +56,12 @@ class ABasicMultiplayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	float WalkSpeed;
+	float SprintSpeed;
+
 public:
 	ABasicMultiplayerCharacter();
-	
+
 	UFUNCTION()
 	void NameSet(const FText& Name);
 protected:
@@ -61,7 +71,21 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
+
+	void StopSprint();
+
+	void Sprint();
+
+	void Interact();
+
+	UFUNCTION(BlueprintCallable, Server, Unreliable)
+	void Server_Interact();
+
+	UFUNCTION(BlueprintCallable, Server, WithValidation, Unreliable)
+	void Server_Walk(const float& Speed);
+
+	UFUNCTION(BlueprintCallable, Server, WithValidation, Unreliable)
+	void Server_Sprint(const float& Speed);
 
 protected:
 	// APawn interface

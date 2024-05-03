@@ -10,10 +10,7 @@ UCLASS(minimalapi)
 class ABasicMultiplayerGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-
 public:
 	ABasicMultiplayerGameMode();
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
-
-
-
